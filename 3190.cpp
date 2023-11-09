@@ -6,19 +6,19 @@ using namespace std;
 
 int N, K, L;
 int col, row;
-int board[102][102] = { 0 };
-bool visit[102][102] = { false };
+int board[102][102] = { 0, };
+bool visit[102][102] = { false, };
 //vector<vector<int>>board(102, vector<int>(102, 0));
 //vector<vector<bool>>visit(102, vector<bool>(102, false));
 int move() {
 	queue<pair<int,int>> q;
 	int dx[4] = { 1,0,-1,0 };
 	int dy[4] = { 0,1,0,-1 };
-	int x, y = 0;
-	int nx, ny = 0;
+	int x = 0;
+	int y = 0;
 	int detection = 0;
-	int sec;
-	char rotate;
+	int sec=0;
+	char rotate=0;
 	int cnt = 0;;
 
 	cin >> L;
@@ -27,9 +27,10 @@ int move() {
 		cin >> sec >> rotate;
 		
 		while (cnt < sec || i == L - 1) {
-			nx = x + dx[detection];
-			ny = y + dy[detection];
+			int nx = x + dx[detection];
+			int ny = y + dy[detection];
 			cnt++;
+			//cout << nx << ny << "\n";
 			if (nx >= 0 && ny >= 0 && nx < N && ny < N && !visit[ny][nx]) {
 				if (board[ny][nx] == 1) {
 					board[ny][nx] = 0;
@@ -73,12 +74,13 @@ void Answer() {
 	
 	res=move();
 	cout << res;
-
 }
 
 int main() {
 	
 	Answer();
+
+	return 0;
 }
 
 
