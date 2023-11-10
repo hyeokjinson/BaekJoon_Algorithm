@@ -13,6 +13,10 @@ const int dy[] = { 0,0,1,-1 };
 int map[13][13];
 vector<pair<int,int>> core;
 
+struct COORD {
+	int y, x;
+};
+
 
 void dfs(int c,int c_cnt,int p_cnt) {
 	if (c == core_size) {
@@ -32,28 +36,34 @@ void dfs(int c,int c_cnt,int p_cnt) {
 		int nx = core[c].second;
 		int ny = core[c].first;
 		bool flag = false;
+		//vector<COORD> check;
 		vector<pair<int, int>> check;
-
 		while (true) {
 			if (nx == 0 || ny == 0 || nx == n - 1 || ny == n - 1) {
-				flag=true;
+				flag = true;
 				break;
 			}
-			nx = nx + dx[i];
-			ny = ny + dy[i];
+			nx += dx[i];
+			ny += dy[i];
 
-			if (map[ny][nx] == 0) 
+			if (map[ny][nx] == 0){ 
+				//check.push_back({ ny,nx }); 
 				check.push_back(make_pair(ny, nx));
-			else break;
+			}
+			else { break; }
 
 		}
 		if (flag) {
 			for (int j = 0; j < check.size(); j++) {
+				//map[check[j].y][check[j].x] = 2;
 				map[check[j].first][check[j].second] = 2;
-
+			}
 				dfs(c + 1, c_cnt + 1, p_cnt + check.size());
+			for (int j = 0; j < check.size(); j++) {
+				//map[check[j].y][check[j].x] = 0;
 				map[check[j].first][check[j].second] = 0;
-			}	
+			}
+				
 		}
 	}
 	dfs(c + 1, c_cnt, p_cnt);
@@ -64,11 +74,11 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 	cin >> t;
-	for (int test = 1; test <= t; test++) {
+	for (int test_case = 1; test_case <= t; test_case++) {
 		cin >> n;
 		memset(map, 0, sizeof(map));
 		core.clear();
-		ans1 = 2147000;
+		ans1 = 169;
 		ans2 = 0;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
@@ -81,6 +91,6 @@ int main() {
 		}
 		core_size = core.size();
 		dfs(0, 0, 0);
-		cout << "#" << test << " " << ans1 << endl;
+		cout << "#" << test_case << " " << ans1 << endl;
 	}
 }
