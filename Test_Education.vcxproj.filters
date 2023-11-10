@@ -18,8 +18,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="14499.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="1767.cpp">
+      <Filter>소스 파일\SWEXPERT_code</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
