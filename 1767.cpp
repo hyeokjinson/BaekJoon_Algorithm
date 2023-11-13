@@ -2,6 +2,8 @@
 #include<vector>
 #include<queue>
 #include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
 
 using namespace std;
 int t, n,core_size;
@@ -36,8 +38,8 @@ void dfs(int c,int c_cnt,int p_cnt) {
 		int nx = core[c].second;
 		int ny = core[c].first;
 		bool flag = false;
-		//vector<COORD> check;
-		vector<pair<int, int>> check;
+		vector<COORD> check;
+		//vector<pair<int, int>> check;
 		while (true) {
 			if (nx == 0 || ny == 0 || nx == n - 1 || ny == n - 1) {
 				flag = true;
@@ -47,21 +49,21 @@ void dfs(int c,int c_cnt,int p_cnt) {
 			ny += dy[i];
 
 			if (map[ny][nx] == 0){ 
-				//check.push_back({ ny,nx }); 
-				check.push_back(make_pair(ny, nx));
+				check.push_back({ ny,nx }); 
+				//check.push_back(make_pair(ny, nx));
 			}
 			else { break; }
 
 		}
 		if (flag) {
 			for (int j = 0; j < check.size(); j++) {
-				//map[check[j].y][check[j].x] = 2;
-				map[check[j].first][check[j].second] = 2;
+				map[check[j].y][check[j].x] = 2;
+				//map[check[j].first][check[j].second] = 2;
 			}
 				dfs(c + 1, c_cnt + 1, p_cnt + check.size());
 			for (int j = 0; j < check.size(); j++) {
-				//map[check[j].y][check[j].x] = 0;
-				map[check[j].first][check[j].second] = 0;
+				map[check[j].y][check[j].x] = 0;
+				//map[check[j].first][check[j].second] = 0;
 			}
 				
 		}
