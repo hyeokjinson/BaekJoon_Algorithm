@@ -39,43 +39,94 @@ struct ROCK {
 	int kind;
 };
 int n, m;
+int black = 0;
+int white=0;
 vector<ROCK> rock;
-int map[9][9];
-int dx[] = { 1,-1,0,0 ,1,-1};
-int dy[] = { 0,0,1,-1 ,1,-1};
-void solve() {
-	int x,y,nx, ny;
-	memset(solve, 0, sizeof(map));
-	
-	for (int i = 0; i < rock.size(); i++) {
-		x = rock[i].x; y = rock[i].y;
-		map[y][x] = rock[i].kind;
-		for (int j = 0; j < 6; j++) {
-			nx = x + dx[j];
-			ny = y + dy[j];
-			if(map[y][x]==map[ny][nx] &&)
-		}
+int map[10][10];
+//int dx[8] = { 1,-1,0,0,-1,1,-1,1};
+//int dy[8] = { 0,0,1,-1,-1,0,1,1};
+
+int dy[8] = { 0,0,1,1,1,-1,-1,-1 };
+int dx[8] = { 1,-1,0,1,-1,0,1,-1 };
+
+
+void setmap(int sy, int sx, int ey, int ex, int stone, int dir) {
+	int y = sy;
+	int x = sx;
+	while (1) {
+		if (y == ey && x == ex)break;
+		map[y][x] = stone;
+		y += dy[dir]; x += dx[dir];
 	}
 }
 
+void solve(int y,int x,int kind) {
+	int nx;
+	int ny;
+	
+		
+	for (int j = 0; j < 8; j++) {
+			nx = x + dx[j];
+			ny = y + dy[j];
+			if (ny<1 || nx<1 || ny>n || nx>n)continue;
+			if (map[ny][nx] == 0 || map[ny][nx] == kind)continue;
+
+			while (1) {
+				ny += dy[j]; nx += dx[j];
+				if (ny<1 || nx<1 || ny>n || nx>n)break;
+				if (map[ny][nx] ==0)break;
+				if (map[ny][nx] == kind) {
+					setmap(y, x, ny, nx, kind, j);
+					break;
+				}
+			}
+		}
+	
+}
+void init() {
+	int y = n / 2;
+	int x = n / 2;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			map[i][j] = 0;
+		}
+	}
+
+	map[y][x] = 2;
+	map[y][x + 1] = 1;
+	map[y + 1][x] = 1;
+	map[y + 1][x + 1] = 2;
+}
 void input() {
 	int x, y, color;
 	for (int i = 0; i < m; i++) {
 		cin >> x >> y >> color;
-		rock.push_back({ x,y,color });
+		//rock.push_back({ x,y,color });
+		solve(y,x,color);
 	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (map[i][j] == 1) { black++; }
+			if (map[i][j] == 2) { white++; }
+		}
+	}
+	
 }
 
 int main(int argc, char** argv)
 {
 	int test_case;
 	int T;
-
+	cin >> T;
 	for (test_case = 1; test_case <= T; ++test_case)
 	{
 		cin >> n >> m;
+		black = 0; white = 0;
+		init();
 		input();
-		
+		cout << "#" << test_case << " " << black << " " << white<<endl;
 	}
 	return 0;
 }
