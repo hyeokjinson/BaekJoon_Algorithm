@@ -53,7 +53,7 @@ int dx[8] = { 1,-1,0,1,-1,0,1,-1 };
 void setmap(int sy, int sx, int ey, int ex, int stone, int dir) {
 	int y = sy;
 	int x = sx;
-	while (1) {
+	while (true) {
 		if (y == ey && x == ex)break;
 		map[y][x] = stone;
 		y += dy[dir]; x += dx[dir];
@@ -66,18 +66,19 @@ void solve(int y,int x,int kind) {
 	
 		
 	for (int j = 0; j < 8; j++) {
-			nx = x + dx[j];
-			ny = y + dy[j];
-			if (ny<1 || nx<1 || ny>n || nx>n)continue;
-			if (map[ny][nx] == 0 || map[ny][nx] == kind)continue;
+			
+		nx = x + dx[j];
+		ny = y + dy[j];
+		if (ny<1 || nx<1 || ny>n || nx>n)continue;
+		if (map[ny][nx] == 0 || map[ny][nx] == kind)continue;
 
-			while (1) {
-				ny += dy[j]; nx += dx[j];
-				if (ny<1 || nx<1 || ny>n || nx>n)break;
-				if (map[ny][nx] ==0)break;
-				if (map[ny][nx] == kind) {
-					setmap(y, x, ny, nx, kind, j);
-					break;
+		while (1) {
+			ny += dy[j]; nx += dx[j];
+			if (ny<1 || nx<1 || ny>n || nx>n)break;
+			if (map[ny][nx] ==0)break;
+			if (map[ny][nx] == kind) {
+				setmap(y, x, ny, nx, kind, j);
+				break;
 				}
 			}
 		}
@@ -93,24 +94,18 @@ void init() {
 		}
 	}
 
-	map[y][x] = 2;
-	map[y][x + 1] = 1;
-	map[y + 1][x] = 1;
-	map[y + 1][x + 1] = 2;
+	map[n / 2][n / 2] = 2;
+	map[(n / 2) + 1][(n / 2) + 1] = 2;
+	map[(n / 2) + 1][n / 2] = 1;
+	map[n / 2][(n / 2) + 1] = 1;
 }
 void input() {
 	int x, y, color;
 	for (int i = 0; i < m; i++) {
 		cin >> x >> y >> color;
 		//rock.push_back({ x,y,color });
+		map[y][x] = color;
 		solve(y,x,color);
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (map[i][j] == 1) { black++; }
-			if (map[i][j] == 2) { white++; }
-		}
 	}
 	
 }
@@ -120,12 +115,18 @@ int main(int argc, char** argv)
 	int test_case;
 	int T;
 	cin >> T;
-	for (test_case = 1; test_case <= T; ++test_case)
+	for (test_case = 1; test_case <= T; test_case++)
 	{
 		cin >> n >> m;
 		black = 0; white = 0;
 		init();
 		input();
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (map[i][j] == 1) { black++; }
+				if (map[i][j] == 2) { white++; }
+			}
+		}
 		cout << "#" << test_case << " " << black << " " << white<<endl;
 	}
 	return 0;
